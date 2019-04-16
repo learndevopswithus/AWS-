@@ -1,2 +1,1 @@
-# AWS-
-AWS CFT
+# AWS
