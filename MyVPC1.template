@@ -1,0 +1,171 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Resources": {
+        "MyVPC": {
+            "Type": "AWS::EC2::VPC",
+            "Properties": {
+                "CidrBlock": {
+                    "Ref": "VpcCidrBlock"
+                }
+            }
+        },
+        "PublicSubnet1": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "MyVPC"
+                },
+                "CidrBlock": {
+                    "Ref": "PublicSubnet1CidrBlock"
+                },
+                "MapPublicIpOnLaunch": "True"
+            }
+        },
+        "PublicSubnet2": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "MyVPC"
+                },
+                "CidrBlock": {
+                    "Ref": "PublicSubnet2CidrBlock"
+                },
+                "MapPublicIpOnLaunch": "True"
+            }
+        },
+        "IGW" : {
+            "Type" : "AWS::EC2::InternetGateway",
+            "Properties" : {}
+        },
+        "IgwAttachment" : {
+            "Type" : "AWS::EC2::VPCGatewayAttachment",
+            "Properties" : {
+                "VpcId" : { "Ref" : "MyVPC" },
+                "InternetGatewayId" : { "Ref" : "IGW" }
+            }
+        },
+        "PublicRouteTable" : {
+            "Type" : "AWS::EC2::RouteTable",
+            "Properties" : {
+                "VpcId" : { "Ref" : "MyVPC" }
+            }
+        },
+        "PublicRoute" : {
+            "Type" : "AWS::EC2::Route",
+            "DependsOn" : "IGW",
+            "Properties" : {
+                "RouteTableId" : { "Ref" : "PublicRouteTable" },
+                "DestinationCidrBlock" : "0.0.0.0/0",
+                "GatewayId" : { "Ref" : "IGW" }
+            }
+        },
+        "PublicSubnetRouteAssociation1": {
+            "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties" : {
+                "RouteTableId" : { "Ref" : "PublicRouteTable" },
+                "SubnetId" : { "Ref" : "PublicSubnet1" }
+            }
+        },
+        "PublicSubnetRouteAssociation2": {
+            "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties" : {
+                "RouteTableId" : { "Ref" : "PublicRouteTable" },
+                "SubnetId" : { "Ref" : "PublicSubnet2" }
+            }
+        },
+        "PublicInstanceSecurityGroup" : {
+            "Type" : "AWS::EC2::SecurityGroup",
+            "Properties" : {
+                "GroupDescription" : "Allow HTTP and SSH traffic to our host",
+                "VpcId" : {"Ref" : "MyVPC"},
+                "SecurityGroupIngress" : [
+                    {
+                        "IpProtocol" : "tcp",
+                        "FromPort" : "22",
+                        "ToPort" : "22",
+                        "CidrIp" : "0.0.0.0/0"
+                    },
+                    {
+                        "IpProtocol" : "tcp",
+                        "FromPort" : "80",
+                        "ToPort" : "80",
+                        "CidrIp" : "0.0.0.0/0"
+                    }
+                    
+                ],
+                "SecurityGroupEgress" : [
+                    {
+                        "IpProtocol" : "tcp",
+                        "FromPort" : "1",
+                        "ToPort" : "65535",
+                        "CidrIp" : "0.0.0.0/0"
+                    }
+                ]
+            }
+        },
+     "MyEC2Instance1" : {
+            "Type" : "AWS::EC2::Instance",
+            "Properties" : {
+                "ImageId" : "ami-0eacc5b7915ba9921",
+                "KeyName" : { "Ref": "SSHKeyName"},
+                "SubnetId": {
+                    "Ref": "PublicSubnet1"
+                },
+                "InstanceType": "t2.micro",
+                "SecurityGroupIds": [
+                    {
+                        "Ref": "PublicInstanceSecurityGroup"
+                    }
+                ]
+            }
+        },
+	"MyEC2Instance2" : {
+            "Type" : "AWS::EC2::Instance",
+            "Properties" : {
+                "ImageId" : "ami-0a574895390037a62",
+                "KeyName" : { "Ref": "SSHKeyName"},
+                "SubnetId": {
+                    "Ref": "PublicSubnet2"
+                },
+                "InstanceType": "t2.micro",
+                "SecurityGroupIds": [
+                    {
+                        "Ref": "PublicInstanceSecurityGroup"
+                    }
+                ]
+            }
+        }
+      }, 
+    "Parameters": {
+        "VpcCidrBlock": {
+            "Description": "VPC CIDR Range (will be a /16 block)",
+            "Type": "String",
+            "Default": "10.0.0.0/16"
+        },
+        "PublicSubnet1CidrBlock": {
+            "Description": "Public Subnet CIDR Range",
+            "Type": "String",
+            "Default": "10.0.1.0/24"
+        },
+        "PublicSubnet2CidrBlock": {
+            "Description": "Public Subnet CIDR Range",
+            "Type": "String",
+            "Default": "10.0.2.0/24"
+        },
+        "SSHKeyName": {
+            "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instances",
+            "Type": "AWS::EC2::KeyPair::KeyName",
+            "ConstraintDescription": "must be the name of an existing EC2 KeyPair."
+        }
+    },
+    "Outputs":{
+        "MyEC2InstancePublicIP": {
+            "Value": {
+                "Fn::GetAtt": [
+                    "MyEC2Instance1",
+                    "PublicIp"
+                ]
+            }
+        }
+    }
+}
