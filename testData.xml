@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+	<items>
+	  <item name="item1" visible="true">
+		<variable>xxx</variable>
+	  </item>
+	  <item name="item2" visible="true">
+		<variable>xxx</variable>
+	  </item> 
+	</items>
+</data>
