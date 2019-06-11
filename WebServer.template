@@ -1,0 +1,37 @@
+{
+   "Parameters":{
+        "NetworkStackNameParameter":{
+              "Type":"String"
+      },
+      "VPCList": {
+            "Description": "The array of VPCs IDs",
+            "Type": "List<AWS::EC2::VPC::Id>"
+        }, 
+        "SubnetList": {
+            "Description": "The array of VPCs IDs",
+            "Type": "List<AWS::EC2::Subnet::Id>"
+        }
+     },
+
+"Resources" : {
+
+  "WebServerInstance" : {
+    "Type" : "AWS::EC2::Instance",
+    "Properties" : {
+      "InstanceType" : "t2.micro",
+      "ImageId" : "ami-0c6b1d09930fac512",
+      "Parameters": {
+                    "VPCList": { "Ref": "VPCList" },
+                    "SubnetList":{ "Ref": "SubnetList" },
+      "NetworkInterfaces" : [{
+        "GroupSet" : [{"Fn::ImportValue" : {"Fn::Sub" : "${NetworkStackNameParameter}-SecurityGroupID"}}],
+        "AssociatePublicIpAddress" : "true",
+        "DeviceIndex" : "0",
+        "DeleteOnTermination" : "true",
+        "SubnetId" : {"Fn::ImportValue" : {"Fn::Sub" : "${NetworkStackNameParameter}-SubnetID"}}
+      }]
+    }
+  }
+}
+}
+}
