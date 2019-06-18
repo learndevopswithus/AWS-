@@ -1,5 +1,5 @@
-# AWS
+# Amazon Web Services
 
-#Images In ReadMe
+# S3 Cross Account Logs
 <img src="S3CrossAccount.png">
 
