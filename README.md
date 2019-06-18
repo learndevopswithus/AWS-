@@ -1,5 +1,6 @@
 # Amazon Web Services
 
-# S3 Cross Account Logs
-<img src="S3CrossAccount.png">
 
+1. Cloudformation Stacks
+2. AWS Boto3 Scripts Automation Using Python
+3. AWS Advanced Services
