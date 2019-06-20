@@ -1,10 +1,10 @@
-#S3 Recent Code Fetch 
+# S3 Recent Code Fetch 
 
-##Purpose: 
+## Purpose: 
           When an Ec2 instance is stopped ,autoscaling will trigger another instance from the AMI Created ,which contains the old code .
 To get updated code from instance during launch we use 'UserData' to pass the script.
 
-##Requirements:
+## Requirements:
   1. ASG associated with Instance.
   2. And ELB running on top of ASG.
   3. S3 Bucket for storing the code.
