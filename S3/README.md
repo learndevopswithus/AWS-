@@ -9,4 +9,4 @@ When an Ec2 instance is stopped ,autoscaling will trigger another instance from 
   3. S3 Bucket for storing the code.
   4. Jenkins to deploy the code and send to S3 Release area.
   
-<img src ="GeneralAWSInfrastructure">
+<img src ="GeneralAWSInfrastructure.png">
