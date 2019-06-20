@@ -1,0 +1,9 @@
+##Execute this Script in Auto Scaling Groups
+
+
+
+#!/bin/bash
+sudo yum update -y
+sudo aws s3 cp s3://jenkins2k19/JenkinsTest.zip /home/ec2-user
+sudo unzip -o /home/ec2-user/JenkinsTest.zip  -d /home/ec2-user/
+sudo cp /home/ec2-user/*.html /var/www/html -f
