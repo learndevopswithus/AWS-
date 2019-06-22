@@ -1,0 +1,67 @@
+{
+    "Outputs": {
+        "outMySubnet1a": {
+            "Export": {
+                "Name": {
+                    "Fn::Sub": "${AWS::StackName}-MySubnet1a"
+                }
+            },
+            "Value": {
+                "Ref": "MySubnet1a"
+            }
+        },
+        "outMySubnet1b": {
+            "Export": {
+                "Name": {
+                    "Fn::Sub": "${AWS::StackName}-MySubnet1b"
+                }
+            },
+            "Value": {
+                "Ref": "MySubnet1b"
+            }
+        }
+    },
+    "Resources": {
+        "MySubnet1a": {
+            "Properties": {
+                "AvailabilityZone": "us-east-1a",
+                "CidrBlock": "10.0.2.0/24",
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "learncf-1a"
+                    },
+                    {
+                        "Key": "Comment",
+                        "Value": "CloudFormation+Troposphere test"
+                    }
+                ],
+                "VpcId": "vpc-0595e8c0919acd368"
+            },
+            "Type": "AWS::EC2::Subnet"
+        },
+        "MySubnet1b": {
+            "Properties": {
+                "AvailabilityZone": "us-east-1b",
+                "CidrBlock": "10.0.1.0/24",
+                "Tags": [
+                    {
+                        "Key": "Comment",
+                        "Value": "CloudFormation+Troposphere test"
+                    },
+                    {
+                        "Key": "Name",
+                        "Value": "learncf-1b"
+                    }
+                ],
+                "VpcId": {
+                    "Fn::GetAtt": [
+                        "MySubnet1a",
+                        "VpcId"
+                    ]
+                }
+            },
+            "Type": "AWS::EC2::Subnet"
+        }
+    }
+}
