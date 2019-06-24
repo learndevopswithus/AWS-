@@ -1,0 +1,54 @@
+1. How do you copy a file or folder using scp?
+	
+	scp -r user@your.server.example.com:/path/to/foo /home/user/Desktop/
+
+2.How do you enable password  based authentication in ssh?
+
+	To enable a password authentication:
+
+1.	you create a password, 
+
+2.	update the  /etc/ssh/sshd_config file
+
+PasswordAuthentication NO -> PasswordAuthentication yes
+
+3.	then restart the SSH service
+
+sudo service ssh restart
+
+Some providers also disable the ability to SSH in directly as root. In those cases, they created a different user for you that has sudo privileges (often named ubuntu). With that user, you can get a root shell by running the command:
+	
+sudo -i
+
+3.file system corrupted then how do you troubleshoot it?
+
+4.What are the entries in fstab?
+
+5.how do you check kernel parameters in a server?
+
+6.In which config file u will tune the kernel parameters??
+
+7.How do you check the kernel version of a server??
+
+8..can we allocate swap memory to file and how can you do that?
+
+9.without umount is it possible to decrease Lvm?
+
+10.can you please explain lvm reduce process?
+
+11.what is default port of squid ?what is the configuration file of squid?
+
+12.how to check current rules defined in iptables?how to add a rule in iptabless to accept packet from a IP address?
+
+13.how do you find how many cpu are in our system and their detail?
+
+14.how to check inode num?how you check inode num of a particular file?
+
+15.how to change IP address?
+
+16.how to recover lost password?
+
+17.how to check run level?
+
+18.If grub is corrupted how you recover that??
+
