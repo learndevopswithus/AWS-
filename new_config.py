@@ -44,7 +44,11 @@ print(L2)
 def lambda_handler(event, context):
     print("Received event: ", event)
     try:
-        config_rule_list = json.loads(event['Records'][0]['Sns']['Message'])['detail']['configRuleNames']
+        try:
+            config_rule_list=[json.loads(a["Sns"]["Message"])["detail"]["additionalEventData"]["configRuleName"] for a in Event["Records"]]
+        except:
+            config_rule_list = json.loads(event['Records'][0]['Sns']['Message'])['detail']['configRuleNames']
+        
         len_config_rule=len(config_rule_list)
         for x in range(len_config_rule):
             print (config_w_list)
